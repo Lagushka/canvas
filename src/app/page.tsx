@@ -1,57 +1,24 @@
 'use client';
 
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import styles from './page.module.css';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { Controls } from '@/components/Controls/Controls';
+import { setCursorCoords } from '@/components/CoordsData/state/cursorDataSlice';
+import { getColor } from './lib/getColor';
+import { getCoords } from './lib/getCoords';
+import { canvasSize } from './constants';
+import { showImage } from './lib/showImage';
+import { Card } from 'antd';
+import Title from 'antd/es/typography/Title';
 import {
+  selectColor,
   setColor,
-  setCursorCoords,
-} from '@/components/CursorInfo/state/cursorInfoSlice';
-
-type CanvasSize = Pick<HTMLCanvasElement, 'width' | 'height'>;
-
-const canvasSize: CanvasSize = {
-  width: 600,
-  height: 400,
-};
-
-type ShowImage = (context: CanvasRenderingContext2D, path: string) => void;
-
-const showImage: ShowImage = (context, path) => {
-  const uploadedImage = new Image();
-  uploadedImage.src = path;
-
-  uploadedImage.onload = () => {
-    console.log(context);
-    const scale = Math.min(
-      canvasSize.width / uploadedImage.width,
-      canvasSize.height / uploadedImage.height,
-    );
-    const x = (canvasSize.width - uploadedImage.width * scale) / 2;
-    const y = (canvasSize.height - uploadedImage.height * scale) / 2;
-
-    context.clearRect(0, 0, canvasSize.width, canvasSize.height);
-    context.drawImage(
-      uploadedImage,
-      x,
-      y,
-      uploadedImage.width * scale,
-      uploadedImage.height * scale,
-    );
-  };
-};
-
-function windowToCanvas(canvas: HTMLCanvasElement, x: number, y: number) {
-  var bbox = canvas.getBoundingClientRect();
-  return {
-    x: x - bbox.left * (canvas.width / bbox.width),
-    y: y - bbox.top * (canvas.height / bbox.height),
-  };
-}
+} from '@/components/ColorData/state/colorDataSlice';
 
 export default function Home() {
   const filePath = useAppSelector((state) => state.uploadedFile.filePath);
+  const cursorCoords = useAppSelector((state) => state.cursorData.coords);
   const dispatch = useAppDispatch();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -64,30 +31,25 @@ export default function Home() {
       if (!canvasRef.current) {
         return;
       }
-      const cursorLocation = windowToCanvas(
-        canvasRef.current,
-        event.clientX,
-        event.clientY,
-      );
+      const coords = getCoords(canvasRef.current, event);
+      if (coords.x === cursorCoords.x && coords.y === cursorCoords.y) {
+        return;
+      }
+      dispatch(setCursorCoords(coords));
 
-      const context = canvasRef.current.getContext('2d');
+      const color = getColor(canvasRef.current, coords);
+      dispatch(setColor(color));
+    };
 
-      if (!context) {
+    canvasRef.current.onclick = () => {
+      if (!canvasRef.current) {
         return;
       }
 
-      const pixel = context.getImageData(
-        cursorLocation.x,
-        cursorLocation.y,
-        1,
-        1,
-      );
-      const data = pixel.data;
-      dispatch(setColor({ r: data[0], g: data[1], b: data[2], a: data[3] }));
-
-      dispatch(setCursorCoords(cursorLocation));
+      const color = getColor(canvasRef.current, cursorCoords);
+      dispatch(selectColor(color));
     };
-  }, [canvasRef, dispatch, filePath]);
+  }, [canvasRef, cursorCoords, dispatch, filePath]);
 
   useLayoutEffect(() => {
     if (!canvasRef.current) {
@@ -98,17 +60,19 @@ export default function Home() {
     if (context) {
       showImage(context, filePath);
     }
-  }, [filePath]);
+  }, [canvasRef, filePath]);
 
   return (
     <main className={styles.main}>
-      <h1>Upload Image</h1>
-      <div className={styles.imagePanel}>
-        <canvas
-          width={canvasSize.width}
-          height={canvasSize.height}
-          ref={canvasRef}
-        ></canvas>
+      <Title level={1}>Upload Image</Title>
+      <div className={styles.imageBlock}>
+        <Card>
+          <canvas
+            width={canvasSize.width}
+            height={canvasSize.height}
+            ref={canvasRef}
+          ></canvas>
+        </Card>
         <Controls />
       </div>
     </main>

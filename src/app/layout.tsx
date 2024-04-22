@@ -1,8 +1,8 @@
 import { StateProvider } from '@/components/StateProvider/StateProvider';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 
-const inter = Inter({ subsets: ['latin'] });
+import '@/styles/variables.css';
+import '@/styles/globals.css';
 
 export const metadata: Metadata = {
   title: 'Create sNext App',
@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <StateProvider>{children}</StateProvider>
       </body>
     </html>

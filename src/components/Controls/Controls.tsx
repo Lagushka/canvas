@@ -3,7 +3,11 @@
 import { useAppDispatch } from '@/store/hooks';
 import { ChangeEventHandler, FC } from 'react';
 import { setFilePath } from './state/uploadedFileSlice';
-import { CursorInfo } from '../CursorInfo/CursorInfo';
+import { Card, Space } from 'antd';
+import { CoordsData } from '../CoordsData/CoordsData';
+import { ColorData } from '../ColorData/ColorData';
+
+import styles from './Controls.module.css';
 
 export const Controls: FC = () => {
   const dispatch = useAppDispatch();
@@ -16,9 +20,12 @@ export const Controls: FC = () => {
   };
 
   return (
-    <div>
-      <input type="file" onChange={handleChange} />
-      <CursorInfo />
-    </div>
+    <Space direction="vertical" size="middle" className={styles.controls}>
+      <Card>
+        <input type="file" onChange={handleChange} />
+      </Card>
+      <CoordsData />
+      <ColorData />
+    </Space>
   );
 };

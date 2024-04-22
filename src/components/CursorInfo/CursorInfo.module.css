@@ -1,16 +1,5 @@
-.cursorInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
 .coords {
   display: flex;
   flex-direction: row;
   gap: 20px;
-}
-
-.color {
-  width: 30px;
-  height: 30px;
 }

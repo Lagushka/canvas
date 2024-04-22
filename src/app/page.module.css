@@ -1,5 +1,5 @@
-.imagePanel {
+.imageBlock {
   display: flex;
-  flex-direction: row;
   gap: 50px;
+  justify-content: center;
 }

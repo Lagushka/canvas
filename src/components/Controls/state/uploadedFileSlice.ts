@@ -5,7 +5,7 @@ type UploadedFileState = {
 };
 
 const initialState: UploadedFileState = {
-  filePath: '',
+  filePath: '/default.jpg',
 };
 
 export const cursorCoordsSlice = createSlice({
