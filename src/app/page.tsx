@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from './page.module.css';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { Controls } from '@/components/Controls/Controls';
@@ -8,22 +8,22 @@ import { setCursorCoords } from '@/components/CoordsData/state/cursorDataSlice';
 import { getColor } from './lib/getColor';
 import { getCoords } from './lib/getCoords';
 import { canvasSize } from './constants';
-import { showImage } from './lib/showImage';
 import { Card } from 'antd';
 import Title from 'antd/es/typography/Title';
 import {
   selectColor,
   setColor,
 } from '@/components/ColorData/state/colorDataSlice';
+import { useDrawImage } from './hooks/useDrawImage';
 
 export default function Home() {
-  const filePath = useAppSelector((state) => state.uploadedFile.filePath);
   const cursorCoords = useAppSelector((state) => state.cursorData.coords);
   const dispatch = useAppDispatch();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  useDrawImage(canvasRef);
 
   useEffect(() => {
-    if (!canvasRef.current || !filePath) {
+    if (!canvasRef.current) {
       return;
     }
 
@@ -49,18 +49,7 @@ export default function Home() {
       const color = getColor(canvasRef.current, cursorCoords);
       dispatch(selectColor(color));
     };
-  }, [canvasRef, cursorCoords, dispatch, filePath]);
-
-  useLayoutEffect(() => {
-    if (!canvasRef.current) {
-      return;
-    }
-    const context = canvasRef.current.getContext('2d');
-
-    if (context) {
-      showImage(context, filePath);
-    }
-  }, [canvasRef, filePath]);
+  }, [canvasRef, cursorCoords, dispatch]);
 
   return (
     <main className={styles.main}>
