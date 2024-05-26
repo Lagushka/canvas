@@ -6,9 +6,7 @@ import React from 'react';
 
 export const CoordsData = () => {
   const cursorCoords = useAppSelector((state) => state.cursorData.coords);
-  const imageSize = useAppSelector(
-    (state) => state.cursorData.initialImageSize,
-  );
+  const imageSize = useAppSelector((state) => state.imageSize.size);
 
   return (
     <Card title="Coordinates" bordered={false}>

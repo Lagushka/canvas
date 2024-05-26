@@ -1,5 +1,7 @@
 body {
   background-color: var(--main-bg-color);
+  margin: 0;
+  overflow-x: hidden;
 }
 
 h1 {

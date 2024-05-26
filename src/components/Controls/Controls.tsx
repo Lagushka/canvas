@@ -8,6 +8,9 @@ import { CoordsData } from '../CoordsData/CoordsData';
 import { ColorData } from '../ColorData/ColorData';
 
 import styles from './Controls.module.css';
+import { RangeInput } from '../RangeInput/RangeInput';
+import { ImageSizeControl } from '../ImageSizeControl/ImageSizeControl';
+import { setImageSize } from '../ImageSizeControl/state/imageSizeSlice';
 
 export const Controls: FC = () => {
   const dispatch = useAppDispatch();
@@ -15,17 +18,21 @@ export const Controls: FC = () => {
   const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     const files = event.target.files;
     if (!files?.length) return;
-    console.log(URL.createObjectURL(files[0]));
-    dispatch(setFilePath(URL.createObjectURL(files[0])));
+    const newPath = URL.createObjectURL(files[0]);
+    console.log(newPath);
+    dispatch(setFilePath(newPath));
+    dispatch(setImageSize({ width: 0, height: 0 }));
   };
 
   return (
-    <Space direction="vertical" size="middle" className={styles.controls}>
+    <Space direction="horizontal" size="large" className={styles.controls}>
       <Card>
         <input type="file" onChange={handleChange} />
       </Card>
       <CoordsData />
       <ColorData />
+      <RangeInput />
+      <ImageSizeControl />
     </Space>
   );
 };

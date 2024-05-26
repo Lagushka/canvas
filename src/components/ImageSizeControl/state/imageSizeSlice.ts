@@ -1,33 +1,27 @@
 import { CanvasSize } from '@/components/Canvas/state/canvasSizeSlice';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-export type Coords = {
-  x: number;
-  y: number;
-};
-
 type cursorDataState = {
-  coords: Coords;
+  size: CanvasSize;
 };
 
 const initialState: cursorDataState = {
-  coords: {
-    x: 0,
-    y: 0,
+  size: {
+    width: 0,
+    height: 0,
   },
 };
 
 export const cursorDataSlice = createSlice({
-  name: 'cursorData',
+  name: 'imageSize',
   initialState,
   reducers: {
-    setCursorCoords: (state, action: PayloadAction<Coords>) => {
-      const { x, y } = action.payload;
-      state.coords = { x, y };
+    setImageSize: (state, action: PayloadAction<CanvasSize>) => {
+      state.size = action.payload;
     },
   },
 });
 
-export const { setCursorCoords } = cursorDataSlice.actions;
+export const { setImageSize } = cursorDataSlice.actions;
 
 export default cursorDataSlice.reducer;
