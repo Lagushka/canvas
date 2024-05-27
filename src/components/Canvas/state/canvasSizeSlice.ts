@@ -1,20 +1,21 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { getStateSetter } from '@/store/lib/getStateSetter';
+import { createSlice } from '@reduxjs/toolkit';
 
 export type CanvasSize = Pick<HTMLCanvasElement, 'width' | 'height'>;
 
-const initialState: CanvasSize = {
-  width: 0,
-  height: 0,
+type CanvasDataState = {
+  size: CanvasSize;
+};
+
+const initialState: CanvasDataState = {
+  size: { width: 0, height: 0 },
 };
 
 export const canvasDataSlice = createSlice({
   name: 'canvasSize',
   initialState,
   reducers: {
-    setCanvasSize: (state, action: PayloadAction<CanvasSize>) => {
-      state.width = action.payload.width;
-      state.height = action.payload.height;
-    },
+    setCanvasSize: getStateSetter<CanvasDataState, 'size', CanvasSize>('size'),
   },
 });
 

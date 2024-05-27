@@ -10,7 +10,7 @@ import { ColorData } from '../ColorData/ColorData';
 import styles from './Controls.module.css';
 import { RangeInput } from '../RangeInput/RangeInput';
 import { ImageSizeControl } from '../ImageSizeControl/ImageSizeControl';
-import { setImageSize } from '../ImageSizeControl/state/imageSizeSlice';
+import { setInitialImageSize } from '../ImageSizeControl/state/imageSizeSlice';
 
 export const Controls: FC = () => {
   const dispatch = useAppDispatch();
@@ -20,8 +20,17 @@ export const Controls: FC = () => {
     if (!files?.length) return;
     const newPath = URL.createObjectURL(files[0]);
     console.log(newPath);
+    const uploadedImage = new Image();
+    uploadedImage.src = newPath;
+    uploadedImage.onload = () => {
+      dispatch(
+        setInitialImageSize({
+          width: uploadedImage.width,
+          height: uploadedImage.height,
+        }),
+      );
+    };
     dispatch(setFilePath(newPath));
-    dispatch(setImageSize({ width: 0, height: 0 }));
   };
 
   return (

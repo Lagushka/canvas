@@ -13,7 +13,6 @@ export const zoomSlice = createSlice({
   initialState,
   reducers: {
     setZoom: (state, action: PayloadAction<number>) => {
-      console.log(action.payload);
       state.zoom = action.payload;
     },
   },

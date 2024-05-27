@@ -1,4 +1,5 @@
 import { setImageSize } from '@/components/ImageSizeControl/state/imageSizeSlice';
+import { setZoom } from '@/components/RangeInput/state/zoomSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { RefObject, useLayoutEffect } from 'react';
 
@@ -7,8 +8,10 @@ type ShowImage = (canvasRef: RefObject<HTMLCanvasElement>) => void;
 export const useDrawImage: ShowImage = (canvasRef) => {
   const dispatch = useAppDispatch();
   const filePath = useAppSelector((state) => state.uploadedFile.filePath);
-  const canvasSize = useAppSelector((state) => state.canvasSize);
-  const imageSize = useAppSelector((state) => state.imageSize.size);
+  const canvasSize = useAppSelector((state) => state.canvasSize.size);
+  const initialImageSize = useAppSelector(
+    (state) => state.imageSize.initialSize,
+  );
 
   useLayoutEffect(() => {
     if (!canvasRef.current) {
@@ -20,15 +23,15 @@ export const useDrawImage: ShowImage = (canvasRef) => {
       const uploadedImage = new Image();
       uploadedImage.src = filePath;
       uploadedImage.onload = () => {
-        let imgWidth = imageSize.width;
-        let imgHeight = imageSize.height;
+        dispatch(setZoom(100));
+        let imgWidth = initialImageSize.width;
+        let imgHeight = initialImageSize.height;
 
-        if (imageSize.width === 0 || imageSize.height === 0) {
+        if (initialImageSize.width === 0 || initialImageSize.height === 0) {
           imgWidth = uploadedImage.width;
           imgHeight = uploadedImage.height;
           dispatch(setImageSize({ width: imgWidth, height: imgHeight }));
         }
-        console.log(imgWidth, imgHeight);
 
         const canvasWidth = canvasSize.width;
         const canvasHeight = canvasSize.height;
@@ -50,8 +53,8 @@ export const useDrawImage: ShowImage = (canvasRef) => {
     canvasSize.width,
     dispatch,
     filePath,
-    imageSize.height,
-    imageSize.width,
+    initialImageSize.height,
+    initialImageSize.width,
   ]);
 
   return;

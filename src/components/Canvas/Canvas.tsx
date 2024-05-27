@@ -12,13 +12,16 @@ import {
 } from '@/components/ColorData/state/colorDataSlice';
 import styles from './Canvas.module.css';
 import { useCanvasSize } from './hooks/useCanvasSize';
+import { useRedrawImage } from './hooks/useRedrawImage';
 
 export const Canvas: FC = () => {
   const cursorCoords = useAppSelector((state) => state.cursorData.coords);
-  const canvasSize = useAppSelector((state) => state.canvasSize);
+  const canvasSize = useAppSelector((state) => state.canvasSize.size);
   const dispatch = useAppDispatch();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
   useDrawImage(canvasRef);
+  useRedrawImage(canvasRef);
   useCanvasSize(canvasRef);
 
   useEffect(() => {

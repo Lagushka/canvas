@@ -5,7 +5,7 @@ import { FC } from 'react';
 import { marks } from './constants';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setZoom } from './state/zoomSlice';
-import { setImageSize } from '../ImageSizeControl/state/imageSizeSlice';
+import { setDisplayedSize } from '../ImageSizeControl/state/imageSizeSlice';
 
 type SliderChangeHandler = (value: number) => void;
 
@@ -17,9 +17,9 @@ export const RangeInput: FC = () => {
   const onChangeSlider: SliderChangeHandler = (value) => {
     dispatch(setZoom(value));
 
-    const width = Math.floor(imageSize.width * value);
-    const height = Math.floor(imageSize.height * value);
-    dispatch(setImageSize({ width, height }));
+    const width = Math.floor((imageSize.width * value) / 100);
+    const height = Math.floor((imageSize.height * value) / 100);
+    dispatch(setDisplayedSize({ width, height }));
   };
 
   return (
