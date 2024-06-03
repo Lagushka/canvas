@@ -1,4 +1,5 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { getStateSetter } from '@/store/lib/getStateSetter';
+import { createSlice } from '@reduxjs/toolkit';
 
 export type RGBColor = {
   r: number;
@@ -7,12 +8,12 @@ export type RGBColor = {
   a: number;
 };
 
-type colorDataState = {
+type ColorDataState = {
   color: RGBColor;
   selectedColor: RGBColor;
 };
 
-const initialState: colorDataState = {
+const initialState: ColorDataState = {
   color: {
     r: 0,
     g: 0,
@@ -31,12 +32,10 @@ export const colorDataSlice = createSlice({
   name: 'colorData',
   initialState,
   reducers: {
-    setColor: (state, action: PayloadAction<RGBColor>) => {
-      state.color = { ...action.payload };
-    },
-    selectColor: (state, action: PayloadAction<RGBColor>) => {
-      state.selectedColor = { ...action.payload };
-    },
+    setColor: getStateSetter<ColorDataState, 'color'>('color'),
+    selectColor: getStateSetter<ColorDataState, 'selectedColor'>(
+      'selectedColor',
+    ),
   },
 });
 

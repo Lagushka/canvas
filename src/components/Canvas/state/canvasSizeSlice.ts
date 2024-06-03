@@ -15,7 +15,7 @@ export const canvasDataSlice = createSlice({
   name: 'canvasSize',
   initialState,
   reducers: {
-    setCanvasSize: getStateSetter<CanvasDataState, 'size', CanvasSize>('size'),
+    setCanvasSize: getStateSetter<CanvasDataState, 'size'>('size'),
   },
 });
 

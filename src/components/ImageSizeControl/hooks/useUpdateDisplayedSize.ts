@@ -4,7 +4,6 @@ import { setDisplayedSize } from '../state/imageSizeSlice';
 
 export const useUpdateDisplayedSize = () => {
   const imageSize = useAppSelector((state) => state.imageSize.size);
-  const initialSize = useAppSelector((state) => state.imageSize.initialSize);
   const zoom = useAppSelector((state) => state.zoomState.zoom);
 
   const dispatch = useAppDispatch();

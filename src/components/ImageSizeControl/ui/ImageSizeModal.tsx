@@ -11,11 +11,12 @@ import {
 } from 'antd';
 import { LockFilled } from '@ant-design/icons';
 import { UnlockOutlined } from '@ant-design/icons';
-import Text from 'antd/es/typography/Text';
 import { CSSProperties, FC, useMemo } from 'react';
 import { ImageSize, OnInputChange, ResizeMethod } from '../types';
 import Paragraph from 'antd/es/typography/Paragraph';
+import Text from 'antd/es/typography/Text';
 import { resizeMethods } from '../constants';
+import { SelectInterpolation } from './InterpolationSelect/InterpolationSelect';
 
 type ImageSizeModalProps = Required<
   Pick<ModalProps, 'onOk' | 'onCancel' | 'open'>
@@ -80,6 +81,7 @@ export const ImageSizeModal: FC<ImageSizeModalProps> = (props) => {
           onChange={onInputChange('height')}
         />
       </Paragraph>
+      <SelectInterpolation />
       <div>
         <Paragraph>
           <Text>Before: </Text>

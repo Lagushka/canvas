@@ -1,16 +1,16 @@
-import { CanvasSize } from '@/components/Canvas/state/canvasSizeSlice';
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { getStateSetter } from '@/store/lib/getStateSetter';
+import { createSlice } from '@reduxjs/toolkit';
 
 export type Coords = {
   x: number;
   y: number;
 };
 
-type cursorDataState = {
+type CursorDataState = {
   coords: Coords;
 };
 
-const initialState: cursorDataState = {
+const initialState: CursorDataState = {
   coords: {
     x: 0,
     y: 0,
@@ -21,10 +21,7 @@ export const cursorDataSlice = createSlice({
   name: 'cursorData',
   initialState,
   reducers: {
-    setCursorCoords: (state, action: PayloadAction<Coords>) => {
-      const { x, y } = action.payload;
-      state.coords = { x, y };
-    },
+    setCursorCoords: getStateSetter<CursorDataState, 'coords'>('coords'),
   },
 });
 

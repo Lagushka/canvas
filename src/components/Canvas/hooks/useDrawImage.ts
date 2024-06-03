@@ -1,4 +1,7 @@
-import { setImageSize } from '@/components/ImageSizeControl/state/imageSizeSlice';
+import {
+  setImageSize,
+  setInitialImageSize,
+} from '@/components/ImageSizeControl/state/imageSizeSlice';
 import { setZoom } from '@/components/RangeInput/state/zoomSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { RefObject, useLayoutEffect } from 'react';
@@ -24,14 +27,11 @@ export const useDrawImage: ShowImage = (canvasRef) => {
       uploadedImage.src = filePath;
       uploadedImage.onload = () => {
         dispatch(setZoom(100));
-        let imgWidth = initialImageSize.width;
-        let imgHeight = initialImageSize.height;
 
-        if (initialImageSize.width === 0 || initialImageSize.height === 0) {
-          imgWidth = uploadedImage.width;
-          imgHeight = uploadedImage.height;
-          dispatch(setImageSize({ width: imgWidth, height: imgHeight }));
-        }
+        const imgWidth = uploadedImage.width;
+        const imgHeight = uploadedImage.height;
+        dispatch(setInitialImageSize({ width: imgWidth, height: imgWidth }));
+        dispatch(setImageSize({ width: imgWidth, height: imgHeight }));
 
         const canvasWidth = canvasSize.width;
         const canvasHeight = canvasSize.height;

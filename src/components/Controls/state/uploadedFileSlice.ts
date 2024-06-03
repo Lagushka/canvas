@@ -1,4 +1,5 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { getStateSetter } from '@/store/lib/getStateSetter';
+import { createSlice } from '@reduxjs/toolkit';
 
 type UploadedFileState = {
   filePath: string;
@@ -12,9 +13,7 @@ export const cursorCoordsSlice = createSlice({
   name: 'cursorCoords',
   initialState,
   reducers: {
-    setFilePath: (state, action: PayloadAction<string>) => {
-      state.filePath = action.payload;
-    },
+    setFilePath: getStateSetter<UploadedFileState, 'filePath'>('filePath'),
   },
 });
 

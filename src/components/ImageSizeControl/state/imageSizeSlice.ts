@@ -27,17 +27,13 @@ export const cursorDataSlice = createSlice({
   name: 'imageSize',
   initialState,
   reducers: {
-    setImageSize: getStateSetter<cursorDataState, 'size', CanvasSize>('size'),
-    setInitialImageSize: getStateSetter<
-      cursorDataState,
+    setImageSize: getStateSetter<cursorDataState, 'size'>('size'),
+    setInitialImageSize: getStateSetter<cursorDataState, 'initialSize'>(
       'initialSize',
-      CanvasSize
-    >('initialSize'),
-    setDisplayedSize: getStateSetter<
-      cursorDataState,
+    ),
+    setDisplayedSize: getStateSetter<cursorDataState, 'displayedSize'>(
       'displayedSize',
-      CanvasSize
-    >('displayedSize'),
+    ),
   },
 });
 
